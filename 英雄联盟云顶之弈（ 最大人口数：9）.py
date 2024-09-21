@@ -140,6 +140,17 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                                                                                                 values_list_rest_best=function2['values_list_rest_best']
                                                                                                                 heroes_groups = function2['heroes_groups']
                                                                                                                 price_sum_max = function2['price_sum_max']
+                                                                                                            elif population_copy>0:
+                                                                                                                for j in range(i + 1, len(names)):
+                                                                                                                    population_copy = population -sizes[a]-sizes[b]-sizes[c]-sizes[d]-sizes[e]-sizes[f]-sizes[g]-sizes[h]-sizes[i]-sizes[j]
+                                                                                                                    result=[a,b,c,d,e,f,g,h,i,j]
+                                                                                                                    if not(j in hero_numbers):
+                                                                                                                        if population_copy==0:
+                                                                                                                            function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
+                                                                                                                            values_list_best=function2['values_list_best']
+                                                                                                                            values_list_rest_best=function2['values_list_rest_best']
+                                                                                                                            heroes_groups=function2['heroes_groups']
+                                                                                                                            price_sum_max=function2['price_sum_max']
     return {'heroes_groups': heroes_groups,'price_sum_max':price_sum_max,'values_list_best':values_list_best,'values_list_rest_best':values_list_rest_best}
 def match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best):
     heroes_group = []
