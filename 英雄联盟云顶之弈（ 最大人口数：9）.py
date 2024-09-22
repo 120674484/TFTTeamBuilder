@@ -1,23 +1,20 @@
 import requests
 import copy
-def bubble_sort(arr):
-    n = len(arr)
-    arr_number=[]
-    for i in arr:
-        start=i.find('(')
-        end=i.find(')')
-        number = int(i[start + 1:end])
-        arr_number.append(number)
-    for i in range(n):
-        for j in range(i+1,n):
-            if arr_number[j] > arr_number[i]:
-                arr_number[i], arr_number[j] = arr_number[j], arr_number[i]
-                arr[i], arr[j] = arr[j], arr[i]
-    return arr
-def final_generate():
+import multiprocessing as mp
+def print_index_if_value_is_larger(lst, target_value):
+    n=len(lst)
+    if n>0:
+        for i in range(n):
+            start = lst[i].find('(')
+            end = lst[i].find(')')
+            number = int(lst[i][start + 1:end])
+            if target_value>number:
+                return i
+        return n
+    return 0
+def final_generate(q,number_of_subprocesses,bonds,number_of_bonds,names,hero_bonds,prices,sizes,bond,population):
     bonds_group = {}
     original_hero_group = []
-    population = 9
     values_list_best = []
     values_list_rest_best=[]
     hero_numbers = []
@@ -26,7 +23,7 @@ def final_generate():
             if a == bond:
                 hero_numbers.append(j)
                 population -= sizes[j]
-                original_hero_group.append(names[j] + '(' + str(prices[j]) + ')')
+                original_hero_group.insert(print_index_if_value_is_larger(original_hero_group,prices[j]),f'{names[j]}({prices[j]})')
                 for c in hero_bonds[j]:
                     try:
                         bonds_group[c] += 1
@@ -35,19 +32,18 @@ def final_generate():
                 break
     price_sum_max=0
     if population>0:
-        function1=hero_group_generate(population,bonds_group,hero_numbers,price_sum_max,values_list_best,values_list_rest_best)
+        function1=hero_group_generate(bonds,number_of_bonds,names,hero_bonds,prices,sizes,population,bonds_group,hero_numbers,price_sum_max,values_list_best,values_list_rest_best)
         heroes_groups=function1['heroes_groups']
-        print(f'''{bond}：{bubble_sort(original_hero_group)}
-{heroes_groups}''')
+        q.put([number_of_subprocesses,f'{bond}：{original_hero_group}\n{heroes_groups}'])
     else:
-        print(f'{bond}：{bubble_sort(original_hero_group)}')
-def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,values_list_best,values_list_rest_best,heroes_groups=[]):
+        q.put(number_of_subprocesses,f'{bond}：{original_hero_group}')
+def hero_group_generate(bonds,number_of_bonds,names,hero_bonds,prices,sizes,population, bonds_group,hero_numbers,price_sum_max,values_list_best,values_list_rest_best,heroes_groups=[]):
     for a in range(len(names)):
         population_copy = population - sizes[a]
         result=[a]
         if not(a in hero_numbers):
             if population_copy==0:
-                function2=match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
+                function2=match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
                 values_list_best=function2['values_list_best']
                 values_list_rest_best=function2['values_list_rest_best']
                 heroes_groups=function2['heroes_groups']
@@ -58,7 +54,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                     result=[a,b]
                     if not(b in hero_numbers):
                         if population_copy==0:
-                            function2 = match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                            function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                             values_list_best = function2['values_list_best']
                             values_list_rest_best=function2['values_list_rest_best']
                             heroes_groups = function2['heroes_groups']
@@ -69,7 +65,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                 result=[a,b,c]
                                 if not(c in hero_numbers):
                                     if population_copy==0:
-                                        function2 = match_machine(result, bonds_group, values_list_best, heroes_groups,price_sum_max,values_list_rest_best)
+                                        function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group, values_list_best, heroes_groups,price_sum_max,values_list_rest_best)
                                         values_list_best = function2['values_list_best']
                                         values_list_rest_best=function2['values_list_rest_best']
                                         heroes_groups = function2['heroes_groups']
@@ -80,7 +76,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                             result=[a,b,c,d]
                                             if not(d in hero_numbers):
                                                 if population_copy==0:
-                                                    function2 = match_machine(result, bonds_group, values_list_best, heroes_groups,price_sum_max,values_list_rest_best)
+                                                    function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group, values_list_best, heroes_groups,price_sum_max,values_list_rest_best)
                                                     values_list_best = function2['values_list_best']
                                                     values_list_rest_best=function2['values_list_rest_best']
                                                     heroes_groups = function2['heroes_groups']
@@ -91,7 +87,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                                         result=[a,b,c,d,e]
                                                         if not(e in hero_numbers):
                                                             if population_copy==0:
-                                                                function2 = match_machine(result, bonds_group, values_list_best,heroes_groups, price_sum_max,values_list_rest_best)
+                                                                function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group, values_list_best,heroes_groups, price_sum_max,values_list_rest_best)
                                                                 values_list_best = function2['values_list_best']
                                                                 values_list_rest_best=function2['values_list_rest_best']
                                                                 heroes_groups = function2['heroes_groups']
@@ -102,7 +98,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                                                     result=[a,b,c,d,e,f]
                                                                     if not(f in hero_numbers):
                                                                         if population_copy==0:
-                                                                            function2 = match_machine(result, bonds_group, values_list_best,heroes_groups, price_sum_max,values_list_rest_best)
+                                                                            function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group, values_list_best,heroes_groups, price_sum_max,values_list_rest_best)
                                                                             values_list_best = function2['values_list_best']
                                                                             values_list_rest_best=function2['values_list_rest_best']
                                                                             heroes_groups = function2['heroes_groups']
@@ -113,7 +109,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                                                                 result=[a,b,c,d,e,f,g]
                                                                                 if not(g in hero_numbers):
                                                                                     if population_copy==0:
-                                                                                        function2 = match_machine(result, bonds_group,values_list_best, heroes_groups,price_sum_max,values_list_rest_best)
+                                                                                        function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group,values_list_best, heroes_groups,price_sum_max,values_list_rest_best)
                                                                                         values_list_best = function2['values_list_best']
                                                                                         values_list_rest_best=function2['values_list_rest_best']
                                                                                         heroes_groups = function2['heroes_groups']
@@ -124,7 +120,7 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                                                                             result=[a,b,c,d,e,f,g,h]
                                                                                             if not(h in hero_numbers):
                                                                                                 if population_copy==0:
-                                                                                                    function2 = match_machine(result, bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
+                                                                                                    function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result, bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
                                                                                                     values_list_best = function2['values_list_best']
                                                                                                     values_list_rest_best=function2['values_list_rest_best']
                                                                                                     heroes_groups = function2['heroes_groups']
@@ -135,29 +131,29 @@ def hero_group_generate(population, bonds_group,hero_numbers,price_sum_max,value
                                                                                                         result=[a,b,c,d,e,f,g,h,i]
                                                                                                         if not(i in hero_numbers):
                                                                                                             if population_copy==0:
-                                                                                                                function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
+                                                                                                                function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
                                                                                                                 values_list_best = function2['values_list_best']
                                                                                                                 values_list_rest_best=function2['values_list_rest_best']
                                                                                                                 heroes_groups = function2['heroes_groups']
                                                                                                                 price_sum_max = function2['price_sum_max']
-                                                                                                            elif population_copy>0:
+                                                                                                            elif population_copy > 0:
                                                                                                                 for j in range(i + 1, len(names)):
                                                                                                                     population_copy = population -sizes[a]-sizes[b]-sizes[c]-sizes[d]-sizes[e]-sizes[f]-sizes[g]-sizes[h]-sizes[i]-sizes[j]
                                                                                                                     result=[a,b,c,d,e,f,g,h,i,j]
                                                                                                                     if not(j in hero_numbers):
                                                                                                                         if population_copy==0:
-                                                                                                                            function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
-                                                                                                                            values_list_best=function2['values_list_best']
+                                                                                                                            function2 = match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best)
+                                                                                                                            values_list_best = function2['values_list_best']
                                                                                                                             values_list_rest_best=function2['values_list_rest_best']
-                                                                                                                            heroes_groups=function2['heroes_groups']
-                                                                                                                            price_sum_max=function2['price_sum_max']
+                                                                                                                            heroes_groups = function2['heroes_groups']
+                                                                                                                            price_sum_max = function2['price_sum_max']
     return {'heroes_groups': heroes_groups,'price_sum_max':price_sum_max,'values_list_best':values_list_best,'values_list_rest_best':values_list_rest_best}
-def match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best):
+def match_machine(bonds,number_of_bonds,names,hero_bonds,prices,result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best):
     heroes_group = []
     price_sum = 0
     bonds_combos=copy.deepcopy(bonds_group)
     for e in result:
-        heroes_group.append(names[e] + '(' + str(prices[e]) + ')')
+        heroes_group.insert(print_index_if_value_is_larger(heroes_group,prices[e]),f'{names[e]}({prices[e]})')
         price_sum+=prices[e]
         for f in hero_bonds[e]:
             try:
@@ -185,59 +181,81 @@ def match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_ma
     if values_list>values_list_best:
         values_list_best=values_list
         values_list_rest_best=values_list_rest
-        heroes_groups=[bubble_sort(heroes_group)]
+        heroes_groups=heroes_group
         price_sum_max=price_sum
     elif values_list==values_list_best:
         if values_list_rest>values_list_rest_best:
             values_list_best=values_list
             values_list_rest_best=values_list_rest
-            heroes_groups=[bubble_sort(heroes_group)]
+            heroes_groups=heroes_group
             price_sum_max=price_sum
         elif values_list_rest==values_list_rest_best:
             if price_sum>price_sum_max:
                 values_list_best=values_list
                 values_list_rest_best=values_list_rest
-                heroes_groups=[bubble_sort(heroes_group)]
+                heroes_groups=heroes_group
                 price_sum_max=price_sum
             elif price_sum==price_sum_max:
-                heroes_groups.append(bubble_sort(heroes_group))
+                heroes_groups.append(heroes_group)
     return {'values_list_best':values_list_best,'heroes_groups':heroes_groups,'price_sum_max':price_sum_max,'values_list_rest_best':values_list_rest_best}
-response = requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
-data = response.json()
-bonds=[]
-number_of_bonds=[]
-for item in data['data']:
+if __name__ == "__main__":
+    response = requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
+    data = response.json()
+    bonds=[]
+    number_of_bonds=[]
     for item in data['data']:
         if item['characterid']:
             bonds.append(item['name'])
             number_of_bonds.append([int(key) for key in reversed(list(item['level'].keys()))])
-response = requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
-data = response.json()
-for item in data['data']:
+    response = requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
+    data = response.json()
     for item in data['data']:
-        if item['characterid']:
+        if item['characterid'] and item['name'] not in bonds:
             bonds.append(item['name'])
             number_of_bonds.append([int(key) for key in reversed(list(item['level'].keys()))])
-response = requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
-data = response.json()
-names = []
-hero_bonds=[]
-prices = []
-for item in data['data']:
-    if int(item['price']) > 0:
-        names.append(item['displayName'])
-        if item['races']:
-            races = item['races'].split(',')
-        else:
-            races = []
-        if item['jobs']:
-            jobs = item['jobs'].split(',')
-        else:
-            jobs = []
-        hero_bonds.append(races+jobs)
-        prices.append(int(item['price']))
-sizes=[1]*len(names)
-for i in range(len(number_of_bonds)):
-    if number_of_bonds[i][0]>1:
-        bond = bonds[i]
-        final_generate()
+    response = requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
+    data = response.json()
+    names = []
+    hero_bonds=[]
+    prices = []
+    for item in data['data']:
+        if int(item['price']) > 0:
+            names.append(item['displayName'])
+            if item['races']:
+                races = item['races'].split(',')
+            else:
+                races = []
+            if item['jobs']:
+                jobs = item['jobs'].split(',')
+            else:
+                jobs = []
+            hero_bonds.append(races+jobs)
+            prices.append(int(item['price']))
+    sizes=[1]*len(names)
+    population = 9
+    processes = []
+    number_of_subprocesses=0
+    q = mp.Queue()
+    for i in range(len(number_of_bonds)):
+        if number_of_bonds[i][0]>1:
+            number_of_subprocesses+=1
+            bond=bonds[i]
+            p = mp.Process(target=final_generate, args=(q,number_of_subprocesses,bonds,number_of_bonds,names,hero_bonds,prices,sizes,bond,population))
+            processes.append(p)
+            p.start()
+    b=1
+    print_times=0
+    completed_indices={}
+    while print_times<number_of_subprocesses:
+        if not q.empty():
+            index, message = q.get()
+            completed_indices[index]=message
+        for index,message in completed_indices.items():
+            if index==b:
+                del completed_indices[index]
+                print(message)
+                b+=1
+                print_times+=1
+                break
+    for p in processes:
+        p.join()
