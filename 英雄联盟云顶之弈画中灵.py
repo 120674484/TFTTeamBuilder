@@ -298,9 +298,8 @@ if __name__ == "__main__":
             with Pool() as pool:
                 result_third=pool.apply_async(chesses_deal,args=(chesses_text,))
                 names,hero_bonds,prices,sizes,combined_heroes_index=result_third.get()
-        while True:
-            if races and jobs and names:
-                break
+        while not (races and jobs and names):
+            pass
         return races+jobs,number_of_bonds_first+number_of_bonds_second,names,hero_bonds,prices,sizes,combined_heroes_index
     async def fetch(session,url):
         async with session.get(url) as response:
