@@ -34,9 +34,7 @@ def chesses_deal(text):
     return names,hero_bonds,prices,sizes,combined_heroes_index
 if __name__ == "__main__":
     from threading import Thread, Semaphore
-    import copy
-    import asyncio
-    import aiohttp
+    import copy,asyncio,aiohttp
     from multiprocessing import Pool
     def print_index_if_value_is_larger(lst, target_value):
         n = len(lst)
