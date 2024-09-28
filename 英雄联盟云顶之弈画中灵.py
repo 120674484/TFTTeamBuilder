@@ -47,12 +47,13 @@ if __name__ == "__main__":
                     return i
             return n
         return 0
-    def final_generate(thread_count, bond, population):
+    def final_generate(thread_count, bond):
         bonds_group = {}
         original_hero_group = []
         values_list_best = []
         values_list_rest_best = []
         hero_numbers = []
+        population = 10
         for j in range(len(names)):
             for a in hero_bonds[j]:
                 if a == bond:
@@ -304,7 +305,6 @@ if __name__ == "__main__":
             return await response.text()
     result=asyncio.run(main())
     bonds,number_of_bonds,names,hero_bonds,prices,sizes,combined_heroes_index=result
-    population=10
     semaphores=[Semaphore(0)]
     semaphores[0].release()
     thread_count=0
@@ -313,7 +313,7 @@ if __name__ == "__main__":
         if number_of_bonds[i][0]>1:
             thread_count+=1
             bond=bonds[i]
-            t = Thread(target=final_generate, args=(thread_count,bond,population))
+            t = Thread(target=final_generate, args=(thread_count,bond))
             semaphores.append(Semaphore(0))
             t.start()
             threads.append(t)

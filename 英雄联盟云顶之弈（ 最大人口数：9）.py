@@ -43,12 +43,13 @@ if __name__ == "__main__":
                     return i
             return n
         return 0
-    def final_generate(thread_count, bond, population):
+    def final_generate(thread_count, bond):
         bonds_group = {}
         original_hero_group = []
         values_list_best = []
         values_list_rest_best = []
         hero_numbers = []
+        population =9
         for j in range(len(names)):
             for a in hero_bonds[j]:
                 if a == bond:
@@ -251,7 +252,7 @@ if __name__ == "__main__":
             with Pool() as pool:
                 result_third=pool.apply_async(chesses_deal,args=(chesses_text,))
                 names,hero_bonds,prices,sizes=result_third.get()
-        while not (races and jobs and names):
+        while not(races and jobs and names):
             pass
         return races+jobs,number_of_bonds_first+number_of_bonds_second,names,hero_bonds,prices,sizes
     async def fetch(session,url):
@@ -259,7 +260,6 @@ if __name__ == "__main__":
             return await response.text()
     result=asyncio.run(main())
     bonds,number_of_bonds,names,hero_bonds,prices,sizes=result
-    population=9
     semaphores=[Semaphore(0)]
     semaphores[0].release()
     thread_count=0
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         if number_of_bonds[i][0]>1:
             thread_count+=1
             bond=bonds[i]
-            t = Thread(target=final_generate, args=(thread_count,bond,population))
+            t = Thread(target=final_generate, args=(thread_count,bond))
             semaphores.append(Semaphore(0))
             t.start()
             threads.append(t)
