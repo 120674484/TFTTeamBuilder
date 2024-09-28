@@ -29,9 +29,10 @@ def chesses_deal(text):
     sizes = [1] * len(names)
     return names,hero_bonds,prices,sizes
 if __name__ == "__main__":
-    from threading import Thread, Semaphore
+    from threading import Semaphore
     import copy,asyncio,aiohttp
     from multiprocessing import Pool
+    from concurrent.futures import ThreadPoolExecutor
     def print_index_if_value_is_larger(lst, target_value):
         n = len(lst)
         if n > 0:
@@ -259,18 +260,17 @@ if __name__ == "__main__":
         async with session.get(url) as response:
             return await response.text()
     result=asyncio.run(main())
-    bonds,number_of_bonds,names,hero_bonds,prices,sizes=result
-    semaphores=[Semaphore(0)]
-    semaphores[0].release()
-    thread_count=0
-    threads=[]
-    for i in range(len(number_of_bonds)):
-        if number_of_bonds[i][0]>1:
-            thread_count+=1
-            bond=bonds[i]
-            t = Thread(target=final_generate, args=(thread_count,bond))
-            semaphores.append(Semaphore(0))
-            t.start()
-            threads.append(t)
-    for t in threads:
-        t.join()
+    with ThreadPoolExecutor() as executor:
+        bonds, number_of_bonds, names, hero_bonds, prices, sizes = result
+        semaphores = [Semaphore(0)]
+        semaphores[0].release()
+        thread_count = 0
+        for i in range(len(number_of_bonds)):
+            if number_of_bonds[i][0]>1:
+                bond = bonds[i]
+                if thread_count>0:
+                    executor.submit(final_generate, thread_count, bond)
+                    semaphores.append(Semaphore(0))
+                else:
+                    executor.submit(final_generate, thread_count, bond)
+                thread_count+=1
