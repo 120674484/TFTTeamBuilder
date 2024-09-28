@@ -112,122 +112,122 @@ if __name__ == "__main__":
         for a in range(len(names)):
             population_copy = population - sizes[a]
             result = [a]
-            if not(a in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                if population_copy == 0:
-                    function2 = match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
-                    values_list_best = function2['values_list_best']
-                    values_list_rest_best = function2['values_list_rest_best']
-                    heroes_groups = function2['heroes_groups']
-                    price_sum_max = function2['price_sum_max']
-                    flag=function2['flag']
-                elif population_copy > 0:
+            if not (a in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
+                if population_copy > 0:
                     for b in range(a + 1, len(names)):
                         population_copy = population - sizes[a] - sizes[b]
                         result = [a, b]
                         if not (b in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                            if population_copy == 0:
-                                function2 = match_machine(result, bonds_group, values_list_best, heroes_groups,price_sum_max, values_list_rest_best,flag)
-                                values_list_best = function2['values_list_best']
-                                values_list_rest_best = function2['values_list_rest_best']
-                                heroes_groups = function2['heroes_groups']
-                                price_sum_max = function2['price_sum_max']
-                                flag=function2['flag']
-                            elif population_copy > 0:
+                            if population_copy > 0:
                                 for c in range(b + 1, len(names)):
                                     population_copy = population - sizes[a] - sizes[b] - sizes[c]
                                     result = [a, b, c]
                                     if not (c in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                        if population_copy == 0:
-                                            function2 = match_machine(result, bonds_group, values_list_best,heroes_groups, price_sum_max,values_list_rest_best,flag)
-                                            values_list_best = function2['values_list_best']
-                                            values_list_rest_best = function2['values_list_rest_best']
-                                            heroes_groups = function2['heroes_groups']
-                                            price_sum_max = function2['price_sum_max']
-                                            flag=function2['flag']
-                                        elif population_copy > 0:
+                                        if population_copy > 0:
                                             for d in range(c + 1, len(names)):
                                                 population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d]
                                                 result = [a, b, c, d]
                                                 if not (d in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                    if population_copy == 0:
-                                                        function2 = match_machine(result, bonds_group, values_list_best,heroes_groups, price_sum_max,values_list_rest_best,flag)
-                                                        values_list_best = function2['values_list_best']
-                                                        values_list_rest_best = function2['values_list_rest_best']
-                                                        heroes_groups = function2['heroes_groups']
-                                                        price_sum_max = function2['price_sum_max']
-                                                        flag=function2['flag']
-                                                    elif population_copy > 0:
+                                                    if population_copy > 0:
                                                         for e in range(d + 1, len(names)):
                                                             population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e]
                                                             result = [a, b, c, d, e]
                                                             if not (e in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                                if population_copy == 0:
-                                                                    function2 = match_machine(result, bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag)
-                                                                    values_list_best = function2['values_list_best']
-                                                                    values_list_rest_best = function2['values_list_rest_best']
-                                                                    heroes_groups = function2['heroes_groups']
-                                                                    price_sum_max = function2['price_sum_max']
-                                                                    flag=function2['flag']
-                                                                elif population_copy > 0:
+                                                                if population_copy > 0:
                                                                     for f in range(e + 1, len(names)):
                                                                         population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f]
                                                                         result = [a, b, c, d, e, f]
                                                                         if not (f in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                                            if population_copy == 0:
-                                                                                function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag)
-                                                                                values_list_best = function2['values_list_best']
-                                                                                values_list_rest_best = function2['values_list_rest_best']
-                                                                                heroes_groups = function2['heroes_groups']
-                                                                                price_sum_max = function2['price_sum_max']
-                                                                                flag=function2['flag']
-                                                                            elif population_copy > 0:
+                                                                            if population_copy > 0:
                                                                                 for g in range(f + 1, len(names)):
-                                                                                    population_copy = population -sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g]
+                                                                                    population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g]
                                                                                     result = [a, b, c, d, e, f, g]
                                                                                     if not (g in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                                                        if population_copy == 0:
-                                                                                            function2 = match_machine(result, bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag)
-                                                                                            values_list_best =function2['values_list_best']
-                                                                                            values_list_rest_best =function2['values_list_rest_best']
-                                                                                            heroes_groups = function2['heroes_groups']
-                                                                                            price_sum_max = function2['price_sum_max']
-                                                                                            flag=function2['flag']
-                                                                                        elif population_copy > 0:
-                                                                                            for h in range(g + 1,len(names)):
-                                                                                                population_copy = population -sizes[a] -sizes[b] -sizes[c] -sizes[d] -sizes[e] -sizes[f] -sizes[g] -sizes[h]
-                                                                                                result = [a, b, c, d, e,f, g, h]
+                                                                                        if population_copy > 0:
+                                                                                            for h in range(g + 1, len(names)):
+                                                                                                population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g] - sizes[h]
+                                                                                                result = [a, b, c, d, e, f, g, h]
                                                                                                 if not (h in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                                                                    if population_copy == 0:
-                                                                                                        function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag)
-                                                                                                        values_list_best =function2['values_list_best']
-                                                                                                        values_list_rest_best =function2['values_list_rest_best']
-                                                                                                        heroes_groups =function2['heroes_groups']
-                                                                                                        price_sum_max =function2['price_sum_max']
-                                                                                                        flag=function2['flag']
-                                                                                                    elif population_copy > 0:
-                                                                                                        for i in range(h + 1,len(names)):
-                                                                                                            population_copy = population -sizes[a] -sizes[b] -sizes[c] -sizes[d] -sizes[e] -sizes[f] -sizes[g] -sizes[h] -sizes[i]
-                                                                                                            result = [a,b,c,d,e,f,g,h,i]
+                                                                                                    if population_copy > 0:
+                                                                                                        for i in range(h + 1, len(names)):
+                                                                                                            population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g] - sizes[h] - sizes[i]
+                                                                                                            result = [a, b, c, d, e, f, g, h, i]
                                                                                                             if not (i in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                                                                                if population_copy == 0:
-                                                                                                                    function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag)
+                                                                                                                if population_copy > 0:
+                                                                                                                    for j in range(i + 1, len(names)):
+                                                                                                                        population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g] - sizes[h] - sizes[i] - sizes[j]
+                                                                                                                        result = [a, b, c, d, e, f, g, h, i, j]
+                                                                                                                        if not (j in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
+                                                                                                                            if population_copy==0:
+                                                                                                                                function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
+                                                                                                                                values_list_best=function2['values_list_best']
+                                                                                                                                values_list_rest_best=function2['values_list_rest_best']
+                                                                                                                                heroes_groups=function2['heroes_groups']
+                                                                                                                                price_sum_max=function2['price_sum_max']
+                                                                                                                                flag=function2['flag']
+                                                                                                                elif population_copy==0:
+                                                                                                                    function2 = match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
                                                                                                                     values_list_best =function2['values_list_best']
                                                                                                                     values_list_rest_best =function2['values_list_rest_best']
                                                                                                                     heroes_groups =function2['heroes_groups']
                                                                                                                     price_sum_max =function2['price_sum_max']
-                                                                                                                    flag=function2['flag']
-                                                                                                                elif population_copy > 0:
-                                                                                                                    for j in range(i + 1,len(names)):
-                                                                                                                        population_copy = population -sizes[a] -sizes[b] -sizes[c] -sizes[d] -sizes[e] -sizes[f] -sizes[g] -sizes[h] -sizes[i] -sizes[j]
-                                                                                                                        result = [a,b,c,d,e,f,g,h,i,j]
-                                                                                                                        if not (j in hero_numbers or set(combined_heroes_index).issubset(set(result + hero_numbers))):
-                                                                                                                            if population_copy == 0:
-                                                                                                                                function2 = match_machine(result,bonds_group,values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag)
-                                                                                                                                values_list_best =function2['values_list_best']
-                                                                                                                                values_list_rest_best =function2['values_list_rest_best']
-                                                                                                                                heroes_groups =function2['heroes_groups']
-                                                                                                                                price_sum_max =function2['price_sum_max']
-                                                                                                                                flag=function2['flag']
+                                                                                                                    flag =function2['flag']
+                                                                                                    elif population_copy==0:
+                                                                                                        function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
+                                                                                                        values_list_best=function2['values_list_best']
+                                                                                                        values_list_rest_best=function2['values_list_rest_best']
+                                                                                                        heroes_groups=function2['heroes_groups']
+                                                                                                        price_sum_max=function2['price_sum_max']
+                                                                                                        flag=function2['flag']
+                                                                                        elif population_copy==0:
+                                                                                            function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
+                                                                                            values_list_best=function2['values_list_best']
+                                                                                            values_list_rest_best=function2['values_list_rest_best']
+                                                                                            heroes_groups=function2['heroes_groups']
+                                                                                            price_sum_max=function2['price_sum_max']
+                                                                                            flag=function2['flag']
+                                                                            elif population_copy==0:
+                                                                                function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
+                                                                                values_list_best=function2['values_list_best']
+                                                                                values_list_rest_best=function2['values_list_rest_best']
+                                                                                heroes_groups=function2['heroes_groups']
+                                                                                price_sum_max=function2['price_sum_max']
+                                                                                flag=function2['flag']
+                                                                elif population_copy==0:
+                                                                    function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
+                                                                    values_list_best=function2['values_list_best']
+                                                                    values_list_rest_best=function2['values_list_rest_best']
+                                                                    heroes_groups=function2['heroes_groups']
+                                                                    price_sum_max=function2['price_sum_max']
+                                                                    flag=function2['flag']
+                                                    elif population_copy==0:
+                                                        function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best,flag)
+                                                        values_list_best=function2['values_list_best']
+                                                        values_list_rest_best=function2['values_list_rest_best']
+                                                        heroes_groups=function2['heroes_groups']
+                                                        price_sum_max=function2['price_sum_max']
+                                                        flag=function2['flag']
+                                        elif population_copy==0:
+                                            function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best, flag)
+                                            values_list_best=function2['values_list_best']
+                                            values_list_rest_best=function2['values_list_rest_best']
+                                            heroes_groups=function2['heroes_groups']
+                                            price_sum_max=function2['price_sum_max']
+                                            flag=function2['flag']
+                            elif population_copy==0:
+                                function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best, flag)
+                                values_list_best=function2['values_list_best']
+                                values_list_rest_best=function2['values_list_rest_best']
+                                heroes_groups=function2['heroes_groups']
+                                price_sum_max=function2['price_sum_max']
+                                flag=function2['flag']
+                elif population_copy==0:
+                    function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best, flag)
+                    values_list_best=function2['values_list_best']
+                    values_list_rest_best=function2['values_list_rest_best']
+                    heroes_groups=function2['heroes_groups']
+                    price_sum_max=function2['price_sum_max']
+                    flag=function2['flag']
         return {'flag':flag,'heroes_groups': heroes_groups, 'price_sum_max': price_sum_max, 'values_list_best': values_list_best,'values_list_rest_best': values_list_rest_best}
     def match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best,flag):
         heroes_group = []
