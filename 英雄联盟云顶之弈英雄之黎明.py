@@ -67,7 +67,7 @@ if __name__ == "__main__":
         if population > 0:
             heroes_groups= hero_group_generate(population, bonds_group, hero_numbers, price_sum_max, values_list_best,values_list_rest_best)
             semaphores[thread_count].acquire()
-            print(f'{bond}：{original_hero_group}\n'+''.join(heroes_groups))
+            print(f'{bond}：{original_hero_group}\n'+''.join([str(sublist) for sublist in heroes_groups]))
         else:
             semaphores[thread_count].acquire()
             print(f'{bond}：{original_hero_group}')
@@ -219,11 +219,11 @@ if __name__ == "__main__":
         async with session.get(url) as response:
             return await response.text()
     result=asyncio.run(main())
+    semaphores = [Semaphore(0)]
+    semaphores[0].release()
+    thread_count = 0
     with ThreadPoolExecutor() as executor:
         bonds, number_of_bonds, names, hero_bonds, prices, sizes = result
-        semaphores = [Semaphore(0)]
-        semaphores[0].release()
-        thread_count = 0
         for i in range(len(number_of_bonds)):
             if number_of_bonds[i][0]>1:
                 bond = bonds[i]
