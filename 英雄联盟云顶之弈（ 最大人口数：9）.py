@@ -65,8 +65,7 @@ if __name__ == "__main__":
                     break
         price_sum_max = 0
         if population > 0:
-            function1 = hero_group_generate(population, bonds_group, hero_numbers, price_sum_max, values_list_best,values_list_rest_best)
-            heroes_groups = function1['heroes_groups']
+            heroes_groups= hero_group_generate(population, bonds_group, hero_numbers, price_sum_max, values_list_best,values_list_rest_best)
             semaphores[thread_count].acquire()
             print(f'{bond}：{original_hero_group}\n'+''.join(heroes_groups))
         else:
@@ -122,60 +121,24 @@ if __name__ == "__main__":
                                                                                                             result = [a, b, c, d, e, f, g, h, i]
                                                                                                             if i not in hero_numbers:
                                                                                                                 if population_copy==0:
-                                                                                                                    function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
-                                                                                                                    values_list_best=function2['values_list_best']
-                                                                                                                    values_list_rest_best=function2['values_list_rest_best']
-                                                                                                                    heroes_groups=function2['heroes_groups']
-                                                                                                                    price_sum_max=function2['price_sum_max']
+                                                                                                                    values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                                                     elif population_copy==0:
-                                                                                                        function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
-                                                                                                        values_list_best=function2['values_list_best']
-                                                                                                        values_list_rest_best=function2['values_list_rest_best']
-                                                                                                        heroes_groups=function2['heroes_groups']
-                                                                                                        price_sum_max=function2['price_sum_max']
+                                                                                                        values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                                         elif population_copy==0:
-                                                                                            function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
-                                                                                            values_list_best=function2['values_list_best']
-                                                                                            values_list_rest_best=function2['values_list_rest_best']
-                                                                                            heroes_groups=function2['heroes_groups']
-                                                                                            price_sum_max=function2['price_sum_max']
+                                                                                            values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                             elif population_copy==0:
-                                                                                function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
-                                                                                values_list_best=function2['values_list_best']
-                                                                                values_list_rest_best=function2['values_list_rest_best']
-                                                                                heroes_groups=function2['heroes_groups']
-                                                                                price_sum_max=function2['price_sum_max']
+                                                                                values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                 elif population_copy==0:
-                                                                    function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
-                                                                    values_list_best=function2['values_list_best']
-                                                                    values_list_rest_best=function2['values_list_rest_best']
-                                                                    heroes_groups=function2['heroes_groups']
-                                                                    price_sum_max=function2['price_sum_max']
+                                                                    values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                     elif population_copy==0:
-                                                        function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
-                                                        values_list_best=function2['values_list_best']
-                                                        values_list_rest_best=function2['values_list_rest_best']
-                                                        heroes_groups=function2['heroes_groups']
-                                                        price_sum_max=function2['price_sum_max']
+                                                        values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                         elif population_copy==0:
-                                            function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best)
-                                            values_list_best=function2['values_list_best']
-                                            values_list_rest_best=function2['values_list_rest_best']
-                                            heroes_groups=function2['heroes_groups']
-                                            price_sum_max=function2['price_sum_max']
+                                            values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                             elif population_copy==0:
-                                function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best)
-                                values_list_best=function2['values_list_best']
-                                values_list_rest_best=function2['values_list_rest_best']
-                                heroes_groups=function2['heroes_groups']
-                                price_sum_max=function2['price_sum_max']
+                                values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                 elif population_copy==0:
-                    function2=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best)
-                    values_list_best=function2['values_list_best']
-                    values_list_rest_best=function2['values_list_rest_best']
-                    heroes_groups=function2['heroes_groups']
-                    price_sum_max=function2['price_sum_max']
-        return {'heroes_groups': heroes_groups, 'price_sum_max': price_sum_max, 'values_list_best': values_list_best,'values_list_rest_best': values_list_rest_best}
+                    values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+        return heroes_groups
     def match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best):
         heroes_group = []
         price_sum = 0
@@ -225,7 +188,7 @@ if __name__ == "__main__":
                     price_sum_max = price_sum
                 elif price_sum == price_sum_max:
                     heroes_groups.append(heroes_group)
-        return {'values_list_best': values_list_best, 'heroes_groups': heroes_groups, 'price_sum_max': price_sum_max,'values_list_rest_best': values_list_rest_best}
+        return values_list_rest,heroes_groups,price_sum_max,values_list_rest_best
     async def main():
         async with aiohttp.ClientSession() as session:
             races_text=await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
