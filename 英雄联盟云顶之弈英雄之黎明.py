@@ -126,25 +126,25 @@ if __name__ == "__main__":
                                                                                                                         result = [a, b, c, d, e, f, g, h, i, j]
                                                                                                                         if j not in hero_numbers:
                                                                                                                             if population_copy==0:
-                                                                                                                                values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                                                                                values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                                                                 elif population_copy==0:
-                                                                                                                    values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                                                                    values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                                                     elif population_copy==0:
-                                                                                                        values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                                                        values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                                         elif population_copy==0:
-                                                                                            values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                                            values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                             elif population_copy==0:
-                                                                                values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                                values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                 elif population_copy==0:
-                                                                    values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                    values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                     elif population_copy==0:
-                                                        values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                        values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                         elif population_copy==0:
-                                            values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                            values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                             elif population_copy==0:
-                                values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                 elif population_copy==0:
-                    values_list_rest,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                    values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
         return heroes_groups
     def match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best):
         heroes_group = []
@@ -195,7 +195,7 @@ if __name__ == "__main__":
                     price_sum_max = price_sum
                 elif price_sum == price_sum_max:
                     heroes_groups.append(heroes_group)
-        return values_list_rest,heroes_groups,price_sum_max,values_list_rest_best
+        return values_list_best,heroes_groups,price_sum_max,values_list_rest_best
     async def main():
         async with aiohttp.ClientSession() as session:
             races_text=await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/14.19-2024.S12-2/race-2.js')
