@@ -212,8 +212,7 @@ if __name__ == "__main__":
         async with session.get(url) as response:
             return await response.text()
     result=asyncio.run(main())
-    semaphores = [Semaphore(0)]
-    semaphores[0].release()
+    semaphores = [Semaphore(1)]
     thread_count = 0
     with ThreadPoolExecutor() as executor:
         bonds, number_of_bonds, names, hero_bonds, prices, sizes = result
