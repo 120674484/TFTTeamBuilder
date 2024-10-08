@@ -227,23 +227,19 @@ if __name__ == "__main__":
                     heroes_groups.append(heroes_group)
         return values_list_best,heroes_groups,price_sum_max,values_list_rest_best,flag
     async def main():
-        async with aiohttp.ClientSession() as session:
-            races_text=await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
-            with Pool() as pool:
-                result_first=pool.apply_async(bonds_deal,(races_text,))
-                races, number_of_bonds_first = result_first.get()
-        async with aiohttp.ClientSession() as session:
-            jobs_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
-            with Pool() as pool:
-                result_second=pool.apply_async(bonds_deal,(jobs_text,))
-                jobs,number_of_bonds_second=result_second.get()
-        async with aiohttp.ClientSession() as session:
-            chesses_text =await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
-            with Pool() as pool:
-                result_third=pool.apply_async(chesses_deal,(chesses_text,))
-                names,hero_bonds,prices,sizes,combined_heroes_index=result_third.get()
-        while not (races and jobs and names):
-            pass
+        with Pool() as pool:
+            async with aiohttp.ClientSession() as session:
+                races_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
+                result_first = pool.apply_async(bonds_deal, (races_text,))
+            async with aiohttp.ClientSession() as session:
+                jobs_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
+                result_second = pool.apply_async(bonds_deal, (jobs_text,))
+            async with aiohttp.ClientSession() as session:
+                chesses_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
+                result_third = pool.apply_async(chesses_deal, (chesses_text,))
+            races, number_of_bonds_first = result_first.get()
+            jobs, number_of_bonds_second = result_second.get()
+            names, hero_bonds, prices, sizes, combined_heroes_index = result_third.get()
         return races+jobs,number_of_bonds_first+number_of_bonds_second,names,hero_bonds,prices,sizes,combined_heroes_index
     async def fetch(session,url):
         async with session.get(url) as response:
