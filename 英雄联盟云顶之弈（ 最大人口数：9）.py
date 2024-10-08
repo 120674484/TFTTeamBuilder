@@ -193,17 +193,17 @@ if __name__ == "__main__":
         async with aiohttp.ClientSession() as session:
             races_text=await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
             with Pool() as pool:
-                result_first=pool.apply_async(bonds_deal,args=(races_text,))
+                result_first=pool.apply_async(bonds_deal,(races_text,))
                 races, number_of_bonds_first = result_first.get()
         async with aiohttp.ClientSession() as session:
             jobs_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
             with Pool() as pool:
-                result_second=pool.apply_async(bonds_deal,args=(jobs_text,))
+                result_second=pool.apply_async(bonds_deal,(jobs_text,))
                 jobs,number_of_bonds_second=result_second.get()
         async with aiohttp.ClientSession() as session:
             chesses_text =await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
             with Pool() as pool:
-                result_third=pool.apply_async(chesses_deal,args=(chesses_text,))
+                result_third=pool.apply_async(chesses_deal,(chesses_text,))
                 names,hero_bonds,prices,sizes=result_third.get()
         while not(races and jobs and names):
             pass
