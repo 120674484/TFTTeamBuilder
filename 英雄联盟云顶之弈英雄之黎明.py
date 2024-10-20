@@ -1,15 +1,15 @@
-import json
+from json import loads
 def bonds_deal(text):
-    data =json.loads(text)
+    data =loads(text)
     bonds = []
     number_of_bonds = []
     for item in data['data']:
         if item['characterid']:
             bonds.append(item['name'])
-            number_of_bonds.append([int(key) for key in reversed(list(item['level'].keys()))])
+            number_of_bonds.append([int(key) for key in reversed(item['level'].keys())])
     return bonds,number_of_bonds
 def chesses_deal(text):
-    data=json.loads(text)
+    data=loads(text)
     names = []
     hero_bonds = []
     prices = []
