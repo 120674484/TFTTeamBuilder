@@ -16,21 +16,16 @@ def chesses_deal(text):
     for item in data['data']:
         if int(item['price']) > 0 and item['displayName']!='霞洛':
             names.append(item['displayName'])
-            if item['races']:
-                races = item['races'].split(',')
-            else:
-                races = []
-            if item['jobs']:
-                jobs = item['jobs'].split(',')
-            else:
-                jobs = []
+            if item['races']:races = item['races'].split(',')
+            else:races = []
+            if item['jobs']:jobs = item['jobs'].split(',')
+            else:jobs = []
             hero_bonds.append(races + jobs)
             prices.append(int(item['price']))
     sizes = [1] * len(names)
     combined_heroes_index = []
     for hero_index in range(len(names)):
-        if names[hero_index] in ['霞', '洛']:
-            combined_heroes_index.append(hero_index)
+            if names[hero_index] in ['霞', '洛']:combined_heroes_index.append(hero_index)
     return names,hero_bonds,prices,sizes,combined_heroes_index
 if __name__ == "__main__":
     from threading import Semaphore
@@ -46,8 +41,7 @@ if __name__ == "__main__":
                 start = lst[i].find('(')
                 end = lst[i].find(')')
                 number = int(lst[i][start + 1:end])
-                if target_value > number:
-                    return i
+                if target_value > number:return i
             return n
         return 0
     def final_generate(thread_count, bond):
@@ -78,8 +72,7 @@ if __name__ == "__main__":
                 bonds_dict =deepcopy(bonds_group)
                 for c in hero_bonds[p]:
                     bonds_dict[c] -= 1
-                    if bonds_dict[c] == 0:
-                        del bonds_dict[c]
+                    if bonds_dict[c] == 0:del bonds_dict[c]
                 heroes_numbers_copy = hero_numbers[:]
                 heroes_numbers_copy.remove(p)
                 heroes_groups,flag,price_sum_max,values_list_best,values_list_rest_best= hero_group_generate(population, bonds_dict, heroes_numbers_copy,price_sum_max, values_list_best, values_list_rest_best)
@@ -196,13 +189,10 @@ if __name__ == "__main__":
             for h in number_of_bonds[match]:
                 if value >= h:
                     value_result = h
-                    if value > h:
-                        value_plus_rest = value
+                    if value > h:value_plus_rest = value
                     break
-            if value_result > 0:
-                values_list.append(value_result)
-            if value_plus_rest > 0:
-                values_list_rest.append(value_plus_rest)
+            if value_result > 0:values_list.append(value_result)
+            if value_plus_rest > 0:values_list_rest.append(value_plus_rest)
         values_list.sort(reverse=True)
         values_list_rest.sort(reverse=True)
         if values_list > values_list_best:
