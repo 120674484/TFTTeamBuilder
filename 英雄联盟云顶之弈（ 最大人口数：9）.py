@@ -30,7 +30,9 @@ def chesses_deal(text):
     return names,hero_bonds,prices,sizes
 if __name__ == "__main__":
     from threading import Semaphore
-    import copy,asyncio,aiohttp
+    from aiohttp import ClientSession
+    from asyncio import run
+    from copy import deepcopy
     from multiprocessing import Pool
     from concurrent.futures import ThreadPoolExecutor
     def print_index_if_value_is_larger(lst, target_value):
@@ -120,7 +122,14 @@ if __name__ == "__main__":
                                                                                                             population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g] - sizes[h] - sizes[i]
                                                                                                             result = [a, b, c, d, e, f, g, h, i]
                                                                                                             if i not in hero_numbers:
-                                                                                                                if population_copy==0:
+                                                                                                                if population_copy > 0:
+                                                                                                                    for j in range(i + 1, len(names)):
+                                                                                                                        population_copy = population - sizes[a] - sizes[b] - sizes[c] - sizes[d] - sizes[e] - sizes[f] - sizes[g] - sizes[h] - sizes[i] - sizes[j]
+                                                                                                                        result = [a, b, c, d, e, f, g, h, i, j]
+                                                                                                                        if j not in hero_numbers:
+                                                                                                                            if population_copy==0:
+                                                                                                                                values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
+                                                                                                                elif population_copy==0:
                                                                                                                     values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
                                                                                                     elif population_copy==0:
                                                                                                         values_list_best,heroes_groups,price_sum_max,values_list_rest_best=match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max,values_list_rest_best)
@@ -142,7 +151,7 @@ if __name__ == "__main__":
     def match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best):
         heroes_group = []
         price_sum = 0
-        bonds_combos = copy.deepcopy(bonds_group)
+        bonds_combos =deepcopy(bonds_group)
         for e in result:
             heroes_group.insert(print_index_if_value_is_larger(heroes_group, prices[e]), f'{names[e]}({prices[e]})')
             price_sum += prices[e]
@@ -190,32 +199,27 @@ if __name__ == "__main__":
                     heroes_groups.append(heroes_group)
         return values_list_best,heroes_groups,price_sum_max,values_list_rest_best
     async def main():
-        async with aiohttp.ClientSession() as session:
-            races_text=await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
-            with Pool() as pool:
-                result_first=pool.apply_async(bonds_deal,(races_text,))
-                races, number_of_bonds_first = result_first.get()
-        async with aiohttp.ClientSession() as session:
-            jobs_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
-            with Pool() as pool:
+        with Pool() as pool:
+            async with ClientSession() as session:
+                races_text = await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
+                result_first = pool.apply_async(bonds_deal, (races_text,))
+            async with ClientSession() as session:
+                jobs_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
                 result_second=pool.apply_async(bonds_deal,(jobs_text,))
-                jobs,number_of_bonds_second=result_second.get()
-        async with aiohttp.ClientSession() as session:
-            chesses_text =await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
-            with Pool() as pool:
+            async with ClientSession() as session:
+                chesses_text =await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
                 result_third=pool.apply_async(chesses_deal,(chesses_text,))
-                names,hero_bonds,prices,sizes=result_third.get()
-        while not(races and jobs and names):
-            pass
+            races, number_of_bonds_first = result_first.get()
+            jobs, number_of_bonds_second = result_second.get()
+            names, hero_bonds, prices, sizes = result_third.get()
         return races+jobs,number_of_bonds_first+number_of_bonds_second,names,hero_bonds,prices,sizes
     async def fetch(session,url):
         async with session.get(url) as response:
             return await response.text()
-    result=asyncio.run(main())
+    bonds, number_of_bonds, names, hero_bonds, prices, sizes=run(main())
     semaphores = [Semaphore(1)]
     thread_count = 0
     with ThreadPoolExecutor() as executor:
-        bonds, number_of_bonds, names, hero_bonds, prices, sizes = result
         for i in range(len(number_of_bonds)):
             if number_of_bonds[i][0]>1:
                 bond = bonds[i]

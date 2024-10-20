@@ -30,7 +30,9 @@ def chesses_deal(text):
     return names,hero_bonds,prices,sizes
 if __name__ == "__main__":
     from threading import Semaphore
-    import copy,asyncio,aiohttp
+    from aiohttp import ClientSession
+    from asyncio import run
+    from copy import deepcopy
     from multiprocessing import Pool
     from concurrent.futures import ThreadPoolExecutor
     def print_index_if_value_is_larger(lst, target_value):
@@ -149,7 +151,7 @@ if __name__ == "__main__":
     def match_machine(result, bonds_group, values_list_best, heroes_groups, price_sum_max, values_list_rest_best):
         heroes_group = []
         price_sum = 0
-        bonds_combos = copy.deepcopy(bonds_group)
+        bonds_combos =deepcopy(bonds_group)
         for e in result:
             heroes_group.insert(print_index_if_value_is_larger(heroes_group, prices[e]), f'{names[e]}({prices[e]})')
             price_sum += prices[e]
@@ -198,13 +200,13 @@ if __name__ == "__main__":
         return values_list_best,heroes_groups,price_sum_max,values_list_rest_best
     async def main():
         with Pool() as pool:
-            async with aiohttp.ClientSession() as session:
+            async with ClientSession() as session:
                 races_text = await fetch(session,'https://game.gtimg.cn/images/lol/act/img/tft/js/race.js')
                 result_first = pool.apply_async(bonds_deal, (races_text,))
-            async with aiohttp.ClientSession() as session:
+            async with ClientSession() as session:
                 jobs_text = await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/job.js')
                 result_second=pool.apply_async(bonds_deal,(jobs_text,))
-            async with aiohttp.ClientSession() as session:
+            async with ClientSession() as session:
                 chesses_text =await fetch(session, 'https://game.gtimg.cn/images/lol/act/img/tft/js/chess.js')
                 result_third=pool.apply_async(chesses_deal,(chesses_text,))
             races, number_of_bonds_first = result_first.get()
@@ -214,11 +216,10 @@ if __name__ == "__main__":
     async def fetch(session,url):
         async with session.get(url) as response:
             return await response.text()
-    result=asyncio.run(main())
+    bonds, number_of_bonds, names, hero_bonds, prices, sizes=run(main())
     semaphores = [Semaphore(1)]
     thread_count = 0
     with ThreadPoolExecutor() as executor:
-        bonds, number_of_bonds, names, hero_bonds, prices, sizes = result
         for i in range(len(number_of_bonds)):
             if number_of_bonds[i][0]>1:
                 bond = bonds[i]
